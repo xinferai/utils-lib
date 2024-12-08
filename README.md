@@ -13,7 +13,7 @@ OR
 yarn add @xinferai/utils-lib
 ```
 
-## [API Documentation](docs/index.html)
+## [API Documentation](https://xinferai.github.io/utils-lib/)
 
 docs/index.html
 

@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "ESNext",
+    "lib": ["es2022"],
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationMap": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "typeRoots": ["./src", "./node_modules/@types"],
+    "rootDir": "src"
+  },
+  "include": ["src/**/*", "src/types.d.ts", "tests/my-module.ts"],
+  "exclude": ["node_modules", "dist"]
+}

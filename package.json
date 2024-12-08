@@ -1,6 +1,6 @@
 {
   "name": "@xinferai/utils-lib",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",
@@ -32,7 +32,11 @@
     "clean": "rm -rf dist",
     "docs": "npx typedoc --out docs src/*.ts"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xinferai/utils-lib.git"
+  },
+  "keywords": ["ai", "utils", "library"],
   "author": "Sam Wen",
   "license": "ISC",
   "description": "",

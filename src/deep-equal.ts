@@ -7,6 +7,9 @@
  * @returns true if objects are deeply equal, false otherwise
  */
 export function deepEqual(obj1: any, obj2: any): boolean {
+  // Handle NaN
+  if (Number.isNaN(obj1) && Number.isNaN(obj2)) return true;
+  
   // Handle primitive types and null
   if (obj1 === obj2) return true;
   if (obj1 === null || obj2 === null) return false;

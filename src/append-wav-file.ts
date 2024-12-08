@@ -14,6 +14,7 @@ import type { AudioPcmParams } from './types.d';
 export function appendWavFile(filepath: string, audioData: Buffer, params: AudioPcmParams): void {
   
   const fileExists = fs.existsSync(filepath);
+  
   let totalSize: number;
 
   if (!fileExists) {

@@ -6,7 +6,7 @@
  * @returns utf-8 string
  * @throws {Error} if base64 decoding is not supported
  */
-function base64ToString(str: string): string {
+export function base64ToString(str: string): string {
   if (typeof Buffer !== 'undefined') {
     // Node.js environment
     return Buffer.from(str, 'base64').toString('utf8');

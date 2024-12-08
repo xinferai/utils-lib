@@ -7,13 +7,15 @@
  */
 export function sentenceCase(str: string): string {
   return str
-    // Insert space before capital letters
-    .replace(/([A-Z])/g, ' $1')
+    // Insert space before capital letters that follow lowercase letters
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    // Insert space before capital letters that follow capital letters
+    .replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
     // Replace underscores and dashes with spaces
     .replace(/[_-]/g, ' ')
     // Remove extra spaces and trim
     .replace(/\s+/g, ' ')
     .trim()
-    // Convert to lowercase
+    // Convert to lowercase last
     .toLowerCase();
 }

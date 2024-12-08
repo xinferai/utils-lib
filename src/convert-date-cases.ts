@@ -32,7 +32,14 @@ export function endsWithAtToDate<T extends object>(obj: T): any {
   return convertObject(obj, 'none', true);
 }
 
-function convertCase(str: string, to: CaseStyle): string {
+/**
+ * Convert a string to snake_case or camelCase.
+ * For tests only.
+ * @param str 
+ * @param to 
+ * @returns string in snake_case or camelCase
+ */
+export function convertCase(str: string, to: CaseStyle): string {
     if (to === 'snake') {
         return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
     } else if (to === 'camel') {
@@ -41,7 +48,15 @@ function convertCase(str: string, to: CaseStyle): string {
     return str; // 'none' case, return as is
 }
 
-function convertObject<T extends object>(
+/**
+ * Convert object keys to snake_case or camelCase and convert date strings to Date objects.
+ * For tests only.
+ * @param obj 
+ * @param toCaseStyle 
+ * @param convertDates 
+ * @returns 
+ */
+export function convertObject<T extends object>(
     obj: T,
     toCaseStyle: CaseStyle,
     convertDates: boolean = false

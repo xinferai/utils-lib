@@ -7,7 +7,7 @@
  */
 export function isPcm16(mimeType: string) {
 
-  const pcmMimeTypes = ['audio/l16', 'audio/wav', 'audio/x-wav'];
+  const pcmMimeTypes = ['audio/l16', 'audio/wav', 'audio/x-wav', 'audio/x-pn-wav', 'audio/vnd.wave'];
 
   mimeType = mimeType.toLowerCase();
   for (const type of pcmMimeTypes) {

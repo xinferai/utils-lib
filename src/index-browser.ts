@@ -2,6 +2,7 @@
 
 //import { appendWavFile } from "./append-wav-file";
 import { base64ToBinary } from "./base64-to-binary";
+import { base64ToString } from "./base64-to-string";
 import { snakeToCamel, camelToSnake, endsWithAtToDate } from "./convert-date-cases";
 import { setPassphrase, getPassphrase, encryptString, decryptString } from "./crypto-browser";
 import { deepClone } from "./deep-clone";
@@ -24,7 +25,7 @@ import { passThrough } from "./pass-through";
 import { pluralize } from "./pluralize";
 import { readRaw } from "./read-raw";
 import { sentenceCase } from "./sentence-case";
-import { toHumanReadable } from "./to-humanReadable";
+import { toHumanReadable } from "./to-human-readable";
 import { utf8ToBase64 } from "./utf8-to-base64";
 
 export type * from "./types";
@@ -32,6 +33,7 @@ export type * from "./types";
 export {
   //appendWavFile,
   base64ToBinary,
+  base64ToString,
   snakeToCamel,
   camelToSnake,
   endsWithAtToDate,
@@ -66,6 +68,7 @@ export {
 export default {
   //appendWavFile,
   base64ToBinary,
+  base64ToString,
   snakeToCamel,
   camelToSnake,
   endsWithAtToDate,

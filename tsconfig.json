@@ -13,6 +13,6 @@
     "typeRoots": ["./src", "./node_modules/@types"],
     "rootDir": "src"
   },
-  "include": ["src/**/*", "src/types.d.ts", "tests/my-module.ts"],
+  "include": ["src/**/*", "src/types.d.ts", "tests/my-module.ts", "tests/is-in-browser.test.ts", "tests/is-pcm16.test.ts"],
   "exclude": ["node_modules", "dist"]
 }

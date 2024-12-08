@@ -1,3 +1,4 @@
+// src/to-human-readable.ts
 
 import { pluralize } from './pluralize';
 import { parseDate } from './parse-date';
@@ -25,23 +26,22 @@ const TIME_UNITS = [
  */
 export function toHumanReadable(input: number | Date | String): string {
   let seconds: number;
+  const now = new Date();
+
   if (typeof input === 'string') {
     const date = parseDate(input);
     if (date === null) {
       throw new Error('Invalid date string');
     }
-    seconds = Math.floor(date.getTime() / 1000);
+    seconds = Math.floor(Math.abs(now.getTime() - date.getTime()) / 1000);
   } else if (input instanceof Date) {
-    seconds = Math.floor(input.getTime() / 1000);
+    seconds = Math.floor(Math.abs(now.getTime() - input.getTime()) / 1000);
   } else if (typeof input === 'number') {
     if (input < 0) {
       throw new Error('Input must be a non-negative number');
     }
-    if (input > 1000000000000) {
-      seconds = Math.floor(input / 1000);
-    } else {
-      seconds = input;
-    }
+    // Only convert to seconds if the number is in milliseconds (larger than 1000000000000)
+    seconds = input > 1000000000000 ? Math.floor(input / 1000) : input;
   } else {
     throw new Error('Input must be a number, Date, or ISO string');
   }

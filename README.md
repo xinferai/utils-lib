@@ -11,6 +11,7 @@ npm install @xinferai/utils-lib
 OR
 
 yarn add @xinferai/utils-lib
+```
 
 ## [API Documentation](docs/index.html)
 

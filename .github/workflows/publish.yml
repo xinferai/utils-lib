@@ -22,8 +22,20 @@ jobs:
     - name: Install dependencies
       run: npm ci
         
+    - name: Install Chrome
+      run: |
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb
+        sudo apt-get install -f
+        
+    - name: Build browser bundle
+      run: npm run build
+        
     - name: Run tests
       run: npm test
+      env:
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+        PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
       
     - name: Update version
       run: |
@@ -34,7 +46,7 @@ jobs:
     - name: Generate documentation
       run: npm run docs
         
-    - name: Build
+    - name: Build for publication
       run: npm run build
         
     - name: Publish to NPM

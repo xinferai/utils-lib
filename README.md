@@ -1,7 +1,7 @@
 
 # Utils library
 
-A Collection of re-usable utilities for building AI related applications - both server and client sides.
+A Collection of re-usable fully tested utilities for building AI related applications - both server and client sides.
 
 ## How to install
 

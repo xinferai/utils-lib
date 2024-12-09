@@ -40,7 +40,11 @@ jobs:
     - name: Update version
       run: |
         VERSION=$(node -p "require('./package.json').version")
-        NEW_VERSION=$(node -p "Number(require('./package.json').version) + 0.01")
+        MAJOR=$(echo $VERSION | cut -d. -f1)
+        MINOR=$(echo $VERSION | cut -d. -f2)
+        PATCH=$(echo $VERSION | cut -d. -f3)
+        NEW_PATCH=$((PATCH + 1))
+        NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
         npm version $NEW_VERSION --no-git-tag-version
         
     - name: Generate documentation

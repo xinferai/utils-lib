@@ -1,0 +1,59 @@
+name: Sync Version
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'package.json'
+
+jobs:
+  sync-version:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Configure Git
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        
+    - name: Check version change
+      id: check_version
+      run: |
+        # Get the current version from main
+        CURRENT_VERSION=$(node -p "require('./package.json').version")
+        
+        # Get the previous version from git history
+        git checkout HEAD^1
+        PREVIOUS_VERSION=$(node -p "require('./package.json').version")
+        
+        # Go back to current commit
+        git checkout -
+        
+        # Compare versions
+        if [ "$CURRENT_VERSION" != "$PREVIOUS_VERSION" ]; then
+          echo "Version changed from $PREVIOUS_VERSION to $CURRENT_VERSION"
+          echo "version_changed=true" >> $GITHUB_OUTPUT
+          echo "new_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+        else
+          echo "Version unchanged"
+          echo "version_changed=false" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Sync develop branch
+      if: steps.check_version.outputs.version_changed == 'true'
+      run: |
+        # Checkout develop branch
+        git checkout develop
+        
+        # Update version in develop's package.json
+        npm version ${{ steps.check_version.outputs.new_version }} --no-git-tag-version --allow-same-version
+        
+        # Commit and push
+        git add package.json
+        git commit -m "chore: sync version with main (${{ steps.check_version.outputs.new_version }}) [skip ci]"
+        git push origin develop

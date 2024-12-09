@@ -1,6 +1,6 @@
 {
   "name": "@xinferai/utils-lib",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",
@@ -36,7 +36,11 @@
     "type": "git",
     "url": "git+https://github.com/xinferai/utils-lib.git"
   },
-  "keywords": ["ai", "utils", "library"],
+  "keywords": [
+    "ai",
+    "utils",
+    "library"
+  ],
   "author": "Sam Wen",
   "license": "MIT",
   "description": "",

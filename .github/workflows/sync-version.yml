@@ -9,17 +9,22 @@ on:
 jobs:
   sync-version:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     steps:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GH_PAT }}
     
     - name: Configure Git
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
+        git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }}
         
     - name: Check version change
       id: check_version
@@ -56,4 +61,6 @@ jobs:
         # Commit and push
         git add package.json
         git commit -m "chore: sync version with main (${{ steps.check_version.outputs.new_version }}) [skip ci]"
-        git push origin develop
+        git push
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }}

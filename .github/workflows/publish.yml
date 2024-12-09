@@ -7,11 +7,14 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
     
     steps:
     - uses: actions/checkout@v4
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        persist-credentials: false
     
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -58,11 +61,11 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         
-    - name: Commit version update and docs
-      run: |
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git add package.json
-        git add docs/
-        git commit -m "chore: bump version and update docs [skip ci]"
-        git push
+    - name: Push changes
+      uses: actions-js/push@master
+      with:
+        github_token: ${{ secrets.GH_PAT }}
+        message: 'chore: bump version and update docs [skip ci]'
+        branch: main
+        author_name: github-actions[bot]
+        author_email: github-actions[bot]@users.noreply.github.com

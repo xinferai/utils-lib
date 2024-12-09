@@ -16,15 +16,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-        token: ${{ secrets.GH_PAT }}
-    
-    - name: Configure Git
-      run: |
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
-      env:
-        GH_PAT: ${{ secrets.GH_PAT }}
+        persist-credentials: false
         
     - name: Check version change
       id: check_version
@@ -49,18 +41,18 @@ jobs:
           echo "version_changed=false" >> $GITHUB_OUTPUT
         fi
     
-    - name: Sync develop branch
+    - name: Update develop version
       if: steps.check_version.outputs.version_changed == 'true'
       run: |
-        # Checkout develop branch
         git checkout develop
-        
-        # Update version in develop's package.json
         npm version ${{ steps.check_version.outputs.new_version }} --no-git-tag-version --allow-same-version
-        
-        # Commit and push
-        git add package.json
-        git commit -m "chore: sync version with main (${{ steps.check_version.outputs.new_version }}) [skip ci]"
-        git push
-      env:
-        GH_PAT: ${{ secrets.GH_PAT }}
+    
+    - name: Push to develop
+      if: steps.check_version.outputs.version_changed == 'true'
+      uses: actions-js/push@master
+      with:
+        github_token: ${{ secrets.GH_PAT }}
+        message: 'chore: sync version with main (${{ steps.check_version.outputs.new_version }}) [skip ci]'
+        branch: develop
+        author_name: github-actions[bot]
+        author_email: github-actions[bot]@users.noreply.github.com

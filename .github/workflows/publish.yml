@@ -1,0 +1,52 @@
+name: Publish Package
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        registry-url: 'https://registry.npmjs.org'
+        
+    - name: Install dependencies
+      run: npm ci
+        
+    - name: Run tests
+      run: npm test
+      
+    - name: Update version
+      run: |
+        VERSION=$(node -p "require('./package.json').version")
+        NEW_VERSION=$(node -p "Number(require('./package.json').version) + 0.01")
+        npm version $NEW_VERSION --no-git-tag-version
+        
+    - name: Generate documentation
+      run: npm run docs
+        
+    - name: Build
+      run: npm run build
+        
+    - name: Publish to NPM
+      run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        
+    - name: Commit version update and docs
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add package.json
+        git add docs/
+        git commit -m "chore: bump version and update docs [skip ci]"
+        git push

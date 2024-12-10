@@ -6,7 +6,7 @@ const commonConfig = {
   splitting: false,
   sourcemap: true,
   clean: true,
-  noExternal: [ 'date-fns']
+  noExternal: [ 'date-fns', 'uuid' ],
 }
 
 export default defineConfig([

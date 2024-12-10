@@ -1,7 +1,7 @@
 
 import { parseDate } from './parse-date';
 
-type CaseStyle = 'snake' | 'camel' | 'none';
+export type CaseStyle = 'snake' | 'camel' | 'none';
 
 /**
  * Convert object keys from snake_case to camelCase

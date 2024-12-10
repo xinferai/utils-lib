@@ -62,17 +62,20 @@ export async function decryptString(encryptedStr: string): Promise<string> {
   return ab2str(decryptedContent);
 }
 
-function str2ab(str: string): Uint8Array {
+// exported for testing
+export function str2ab(str: string): Uint8Array {
   const encoder = new TextEncoder();
   return encoder.encode(str);
 }
 
-function ab2str(buffer: ArrayBuffer): string {
+// exported for testing
+export function ab2str(buffer: ArrayBuffer): string {
   const decoder = new TextDecoder();
   return decoder.decode(buffer);
 }
 
-async function generateKey(): Promise<CryptoKey> {
+// exported for testing
+export async function generateKey(): Promise<CryptoKey> {
   if (cryptoKey) {
       return cryptoKey;
   }

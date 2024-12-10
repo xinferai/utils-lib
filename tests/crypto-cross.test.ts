@@ -2,8 +2,7 @@
 
 import puppeteer from "puppeteer";
 import type { Browser, Page } from 'puppeteer';
-import fs from "fs";
-import path from "path";
+import * as cryptoBrowser from '../src/crypto-browser';
 import { encryptString, decryptString, setPassphrase } from "../src/crypto-node";
 
 declare global {
@@ -27,13 +26,30 @@ describe('Verify crossing between nodejs and browser encryption / decryption', (
     });
     
     page = await browser.newPage();
-    await page.goto('https://www.google.com');
+    await page.goto('https://www.xinfer.ai');
 
-    // Inject browser.js as a global variable in the browser context
-    let browserUtilsScript = fs.readFileSync(path.join(__dirname, '../dist/browser/index.js'), 'utf8');
-    browserUtilsScript = browserUtilsScript.replace('module.exports', 'window.browserUtils');
+    // Create a self-contained version of the crypto functions
+    const browserCode = `
+      let passphrase = 'default passphrase';
+      let cryptoKey = null;
+      
+      ${cryptoBrowser.str2ab.toString()}
+      ${cryptoBrowser.ab2str.toString()}
+      ${cryptoBrowser.generateKey.toString()}
+      ${cryptoBrowser.setPassphrase.toString()}
+      ${cryptoBrowser.getPassphrase.toString()}
+      ${cryptoBrowser.encryptString.toString()}
+      ${cryptoBrowser.decryptString.toString()}
+      
+      window.browserUtils = {
+        setPassphrase,
+        getPassphrase,
+        encryptString,
+        decryptString
+      };
+    `;
 
-    await page.evaluate(browserUtilsScript);
+    await page.evaluate(browserCode);
 
     // Set passphrase in both Node.js and the browser environment
     const passphrase = 'test-passphrase';

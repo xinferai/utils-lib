@@ -1,10 +1,6 @@
-
-// tests/crypto-browser.test.ts:
-
 import puppeteer from 'puppeteer';
 import type { Browser, Page } from 'puppeteer';
-import fs from 'fs';
-import path from 'path';
+import * as cryptoBrowser from '../src/crypto-browser';
 
 declare global {
   interface Window {
@@ -13,28 +9,43 @@ declare global {
 }
 
 describe('browser', () => {
-
   let browser: Browser;
   let page: Page;
 
   beforeAll(async () => {
     browser = await puppeteer.launch({ 
-        headless: true,
-        args: [
-            '--no-sandbox', 
-            '--disable-setuid-sandbox',
-        ] 
+      headless: true,
+      args: [
+        '--no-sandbox', 
+        '--disable-setuid-sandbox',
+      ] 
     });
     
     page = await browser.newPage();
-    await page.goto('https://www.google.com');
+    await page.goto('https://www.xinfer.ai');
 
-    // Inject browser.js as a global variable in the browser context
-    let browserUtilsScript = fs.readFileSync(path.join(__dirname, '../dist/browser/index.js'), 'utf8');
-    browserUtilsScript = browserUtilsScript.replace('module.exports', 'window.browserUtils');
+    // Create a self-contained version of the crypto functions
+    const browserCode = `
+      let passphrase = 'default passphrase';
+      let cryptoKey = null;
+      
+      ${cryptoBrowser.str2ab.toString()}
+      ${cryptoBrowser.ab2str.toString()}
+      ${cryptoBrowser.generateKey.toString()}
+      ${cryptoBrowser.setPassphrase.toString()}
+      ${cryptoBrowser.getPassphrase.toString()}
+      ${cryptoBrowser.encryptString.toString()}
+      ${cryptoBrowser.decryptString.toString()}
+      
+      window.browserUtils = {
+        setPassphrase,
+        getPassphrase,
+        encryptString,
+        decryptString
+      };
+    `;
 
-    await page.evaluate(browserUtilsScript);
-
+    await page.evaluate(browserCode);
   });
 
   afterAll(async () => {
@@ -45,31 +56,28 @@ describe('browser', () => {
   test('should encrypt and decrypt a string correctly', async () => {
     const originalText = 'Hello, world!';
 
-    // Run encryption and decryption in the browser context
     const encryptedText = await page.evaluate(async (text) => {
-        return await window.browserUtils.encryptString(text);
+      return await window.browserUtils.encryptString(text);
     }, originalText);
 
-    const decryptedText = await page.evaluate(async (encryptedText) => {
-        return await window.browserUtils.decryptString(encryptedText);
+    const decryptedText = await page.evaluate(async (encrypted) => {
+      return await window.browserUtils.decryptString(encrypted);
     }, encryptedText);
 
     expect(decryptedText).toBe(originalText);
-});
+  });
 
-test('should set and get the passphrase', async () => {
+  test('should set and get the passphrase', async () => {
     const newPassphrase = 'my new passphrase';
 
-    // Set passphrase in the browser context
     await page.evaluate((passphrase) => {
-        window.browserUtils.setPassphrase(passphrase);
+      window.browserUtils.setPassphrase(passphrase);
     }, newPassphrase);
 
-    // Get passphrase and assert it's correctly set
     const passphrase = await page.evaluate(() => {
-        return window.browserUtils.getPassphrase();
+      return window.browserUtils.getPassphrase();
     });
 
     expect(passphrase).toBe(newPassphrase);
-});
+  });
 });

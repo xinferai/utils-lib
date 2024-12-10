@@ -1,4 +1,4 @@
-// src/get-uuid.ts
+// src/get-uuid-node.ts
 
 import { v4 } from 'uuid';
 

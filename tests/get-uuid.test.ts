@@ -1,6 +1,6 @@
 // tests/get-uuid.test.ts
 
-import { getUUID } from '../src/get-uuid';
+import { getUUID } from '../src/get-uuid-node';
 import { v4 } from 'uuid';
 
 // Mock uuid v4 function

@@ -27,7 +27,7 @@ import { readRaw } from "./read-raw";
 import { sentenceCase } from "./sentence-case";
 import { toHumanReadable } from "./to-human-readable";
 import { utf8ToBase64 } from "./utf8-to-base64";
-import { getUUID } from "./get-uuid";
+import { getUUID } from "./get-uuid-node";
 
 export type * from "./types";
 

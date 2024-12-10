@@ -1,14 +1,17 @@
+# sync-version.yml
 name: Sync Version To Develop
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'package.json'
+  workflow_run:
+    workflows: ["Publish Package"]
+    types:
+      - completed
+    branches: [main]
 
 jobs:
   sync-version:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: write
     

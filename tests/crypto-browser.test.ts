@@ -46,7 +46,7 @@ describe('browser', () => {
     `;
 
     await page.evaluate(browserCode);
-  });
+  }, 10000);
 
   afterAll(async () => {
     if (page) await page.close();

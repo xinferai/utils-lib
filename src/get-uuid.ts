@@ -63,7 +63,7 @@ class UUIDCache {
         }
     };
 
-    setImmediate(generateBatch);
+    setTimeout(generateBatch, 0);
   }
 }
 

@@ -61,5 +61,5 @@ describe('base64ToString', () => {
     expect(result).toBe('Hello, Browser!');
 
     await browser.close();
-  });
+  }, 10000);
 });

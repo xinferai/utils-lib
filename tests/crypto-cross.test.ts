@@ -57,7 +57,7 @@ describe('Verify crossing between nodejs and browser encryption / decryption', (
     await page.evaluate((passphrase) => {
       window.browserUtils.setPassphrase(passphrase);
     }, passphrase);
-  });
+  }, 10000);
 
   afterAll(async () => {
     if (page) await page.close();

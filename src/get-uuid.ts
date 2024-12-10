@@ -19,7 +19,7 @@ class UUIDCache {
    * @param {number} cacheSize - The maximum number of UUIDs to cache
    * @param {number} lowWaterMark - The minimum number of UUIDs to keep in the cache
    */
-  constructor(cacheSize: number = 1000, lowWaterMark: number = Math.floor(cacheSize * 0.2)) {
+  constructor(cacheSize: number = 666, lowWaterMark: number = Math.floor(cacheSize * 0.2)) {
     this.cacheSize = cacheSize;
     this.lowWaterMark = lowWaterMark;
     this.cache = [];  
@@ -48,7 +48,7 @@ class UUIDCache {
     this.isGenerating = true;
 
     const generateBatch = () => {
-        const batchSize = 100;
+        const batchSize = 33;
         let generated = 0;
 
         while (generated < batchSize && this.cache.length < this.cacheSize) {
@@ -57,7 +57,7 @@ class UUIDCache {
         }
 
         if (this.cache.length < this.cacheSize) {
-            setImmediate(generateBatch);
+            setTimeout(generateBatch, 0);
         } else {
             this.isGenerating = false;
         }

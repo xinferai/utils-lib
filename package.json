@@ -1,6 +1,6 @@
 {
   "name": "@xinferai/utils-lib",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",

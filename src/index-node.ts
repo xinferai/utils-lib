@@ -28,7 +28,7 @@ import { sentenceCase } from "./sentence-case";
 import { toHumanReadable } from "./to-human-readable";
 import { utf8ToBase64 } from "./utf8-to-base64";
 import { getUUID } from "./get-uuid-node";
-import debug from "debug/src/node.js";
+import setupDebug from "debug/src/node.js";
 
 export type * from "./types";
 
@@ -66,7 +66,7 @@ export {
   toHumanReadable,
   utf8ToBase64,
   getUUID,
-  debug,
+  setupDebug,
 };
 
 export default {
@@ -103,7 +103,7 @@ export default {
   toHumanReadable,
   utf8ToBase64,
   getUUID,
-  debug
+  setupDebug
 };
 
 
